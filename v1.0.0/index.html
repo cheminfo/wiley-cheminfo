@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, td {
+      border: 1px solid black;
+}
+</style>
+
+<title>NMR manager</title>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>
+window.addEventListener('message', function (event) {
+	  if (event.data && event.data.id && event.data.tiny) {
+	    saveTiny(event.data.id, event.data.tiny);
+    event.source.close();
+  }
+});
+
+function openVisualizer(id){
+  id = id || Math.floor(Math.random()*10000);
+  window.open('http://wiley.cheminfo.org/v1.0.0/view.html?entryID=' + id);
+}
+
+var list = loadList();
+function saveTiny(id, url) {
+  var found = list.filter(function(el){
+    return el.id === id;
+  });
+  if (found[0]) {
+    found[0].tiny.push(url);
+  } else {
+    list.push({id: id, tiny: [url]});
+  }
+
+  localStorage.setItem('nmrData', JSON.stringify(list));
+  renderList();
+}
+
+function renderList() {
+  var table = $('<table>');
+  list.forEach(function(el){
+    var tr = $('<tr>');
+    tr.append('<td>' + el.id + '</td>');
+    el.tiny.forEach(function(url, idx){
+	      tr.append('<td><a href="http://wiley.cheminfo.org/v1.0.0/view.html?entryID=' + el.id + '&id=' + url + '" target="_blank">rev' + (idx + 1) + '</a></td>');
+    });
+    table.append(tr);
+    $('#myTable').html(table);
+  });
+  document.getElementById('json').innerHTML=JSON.stringify(list,null,3);
+}
+
+function loadList() {
+  var data = localStorage.getItem('nmrData');
+  try {
+    data = JSON.parse(data);
+    if (data instanceof Array) return data;
+    else return [];
+  } catch (e) {
+    return [];
+  }
+}
+</script>
+
+</head>
+<body>
+
+<p>NMR list</p>
+
+<div id="myTable"></div>
+<p>
+  <button onclick="openVisualizer();">Add new entry</button>
+</p>
+
+<p>The following code should be saved in your database in order to be able to recreate the table:</p>
+<p>
+<textarea id='json' cols=80 rows=10></textarea>
+</p>
+<script>
+renderList();
+</script>
+
+</body>
+</html>
+
+
