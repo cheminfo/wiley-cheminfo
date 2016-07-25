@@ -11,6 +11,9 @@ table, td {
 
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script>
+  const couchUrl = 'https://mydb.cheminfo.org/';
+  const database = 'wiley';
+
 window.addEventListener('message', function (event) {
   saveTiny(event.data);
   var iframe = document.getElementById("cheminfo");
@@ -24,18 +27,17 @@ function openVisualizer(){
     iframe.id = "cheminfo"
     iframe.height="800";
     iframe.width="1000";
-    iframe.src = "http://www.cheminfo.org/flavor/wiley/index.html";
+    iframe.src = "http://www.cheminfo.org/flavor/eln-standalone/Selection/index.html?couchUrl="+couchUrl+"&database="+database;
     document.body.appendChild(iframe);
   }
   iframe.style.display = "block";
-
 }
 
 var list = loadList();
 function saveTiny(data) {
   for(var i=0;i<data.length;i++){
     var found = false;
-    for(var j=0;j<list.length;j++){
+    for(var j=0;j<list.length;j++){""
       if(list[j].id==data[i].id){
         list[j].rev= data[i].rev;
         found=true;
@@ -53,7 +55,8 @@ function renderList() {
   list.forEach(function(el){
     var tr = $('<tr>');
     tr.append('<td>' + el.id + '</td>');
-    tr.append('<td><a href="http://wiley.cheminfo.org/v1.0.0/view.html?uuid=' + el.id + '&rev=' + el.rev + '" target="_blank">rev' + el.rev + '</a></td>');
+    //Here it has to be the TOKEN. For now, I use the uuid combined with the couchUrl and database
+    tr.append('<td><a href="http://www.cheminfo.org/flavor/eln-standalone/process1D/index.html?uuid=' + el.id + '&rev=' + el.rev +"&couchUrl="+couchUrl+"&database="+database +'" target="_blank">' + el.ref + '</a></td>');
     table.append(tr);
     $('#myTable').html(table);
   });
@@ -93,5 +96,3 @@ renderList();
 
 </body>
 </html>
-
-
