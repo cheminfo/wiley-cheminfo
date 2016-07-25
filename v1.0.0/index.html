@@ -12,29 +12,39 @@ table, td {
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script>
 window.addEventListener('message', function (event) {
-	  if (event.data && event.data.id && event.data.tiny) {
-	    saveTiny(event.data.id, event.data.tiny);
-    event.source.close();
-  }
+  saveTiny(event.data);
+  var iframe = document.getElementById("cheminfo");
+  iframe.style.display = "none";
 });
 
-function openVisualizer(id){
-  id = id || Math.floor(Math.random()*10000);
-  window.open('http://wiley.cheminfo.org/v1.0.0/view.html?entryID=' + id);
+function openVisualizer(){
+  var iframe = document.getElementById("cheminfo");
+  if(!iframe){
+    var iframe = document.createElement('iframe');
+    iframe.id = "cheminfo"
+    iframe.height="800";
+    iframe.width="1000";
+    iframe.src = "http://www.cheminfo.org/flavor/wiley/index.html";
+    document.body.appendChild(iframe);
+  }
+  iframe.style.display = "block";
+
 }
 
 var list = loadList();
-function saveTiny(id, url) {
-  var found = list.filter(function(el){
-    return el.id === id;
-  });
-  if (found[0]) {
-    found[0].tiny.push(url);
-  } else {
-    list.push({id: id, tiny: [url]});
+function saveTiny(data) {
+  for(var i=0;i<data.length;i++){
+    var found = false;
+    for(var j=0;j<list.length;j++){
+      if(list[j].id==data[i].id){
+        list[j].rev= data[i].rev;
+        found=true;
+        break;
+      }
+    }
+    if(!found)
+      list.push(data[i]);
   }
-
-  localStorage.setItem('nmrData', JSON.stringify(list));
   renderList();
 }
 
@@ -43,9 +53,7 @@ function renderList() {
   list.forEach(function(el){
     var tr = $('<tr>');
     tr.append('<td>' + el.id + '</td>');
-    el.tiny.forEach(function(url, idx){
-	      tr.append('<td><a href="http://wiley.cheminfo.org/v1.0.0/view.html?entryID=' + el.id + '&id=' + url + '" target="_blank">rev' + (idx + 1) + '</a></td>');
-    });
+    tr.append('<td><a href="http://wiley.cheminfo.org/v1.0.0/view.html?uuid=' + el.id + '&rev=' + el.rev + '" target="_blank">rev' + el.rev + '</a></td>');
     table.append(tr);
     $('#myTable').html(table);
   });
@@ -53,14 +61,15 @@ function renderList() {
 }
 
 function loadList() {
-  var data = localStorage.getItem('nmrData');
+  return [];
+  /*var data = localStorage.getItem('nmrData');
   try {
     data = JSON.parse(data);
     if (data instanceof Array) return data;
     else return [];
   } catch (e) {
     return [];
-  }
+  }*/
 }
 </script>
 

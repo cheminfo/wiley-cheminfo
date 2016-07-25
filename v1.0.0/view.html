@@ -9,31 +9,31 @@
 
 <script>
     'use strict';
-    
+
     var entryID;
     function saveTiny(tiny) {
-      window.opener.postMessage({id: entryID, tiny: tiny}, '*');
+        window.opener.postMessage({id: entryID, tiny: tiny}, '*');
     }
 
     var version='v2.22.0';
     //var viewURL='http://visualizer.epfl.ch/x/wmN5WEupWFQKg5jFE4uz/view.json';
     var viewURL='./view.json'
     var dataURL='';
-        var parameters=URI.parseQuery(document.location.search);
-        if (parameters.id) {
-            dataURL='http://visualizer.epfl.ch/x/'+parameters.id+'/data.json';
-        }
-        if (parameters.entryID) { entryID = parameters.entryID }
-        window.onload=function() {
-          var visualizer = document.createElement('script');
-          var prefix = 'http://www.lactame.com/visualizer/';
-          $('#ci-visualizer').attr('data-ci-view',viewURL);
-          $('#ci-visualizer').attr('data-ci-data',dataURL);
-          $('#ci-visualizer').attr('data-ci-config','xx');
-          visualizer.setAttribute('data-main', prefix + version + '/init');
-          visualizer.setAttribute('src', prefix + version + '/components/requirejs/require.js');
-          document.head.appendChild(visualizer);
-        }
+    var parameters=URI.parseQuery(document.location.search);
+    if (parameters.id) {
+        dataURL='http://visualizer.epfl.ch/x/'+parameters.id+'/data.json';
+    }
+    if (parameters.entryID) { entryID = parameters.entryID }
+    window.onload=function() {
+        var visualizer = document.createElement('script');
+        var prefix = 'http://www.lactame.com/visualizer/';
+        $('#ci-visualizer').attr('data-ci-view',viewURL);
+        $('#ci-visualizer').attr('data-ci-data',dataURL);
+        $('#ci-visualizer').attr('data-ci-config','xx');
+        visualizer.setAttribute('data-main', prefix + version + '/init');
+        visualizer.setAttribute('src', prefix + version + '/components/requirejs/require.js');
+        document.head.appendChild(visualizer);
+    }
 </script>
 <div id="errorMessage"></div>
 <tr>
