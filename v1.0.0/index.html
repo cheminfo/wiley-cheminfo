@@ -56,7 +56,7 @@ function renderList() {
     var tr = $('<tr>');
     tr.append('<td>' + el.id + '</td>');
     //Here it has to be the TOKEN. For now, I use the uuid combined with the couchUrl and database
-    tr.append('<td><a href="http://www.cheminfo.org/flavor/eln-standalone/process1D/index.html?uuid=' + el.id + '&rev=' + el.rev +"&couchDB={'url':'"+couchUrl+"','database':'"+database +"','kind':'sample'}"+' target="_blank">' + el.ref + '</a></td>');
+    tr.append('<td><a href="http://www.cheminfo.org/flavor/eln-standalone/process1D/index.html?uuid=' + el.id + '&rev=' + el.rev +"&couchDB={'url':'"+couchUrl+"','database':'"+database +"','kind':'sample'}"+'" target="_blank">' + el.ref + '</a></td>');
     table.append(tr);
     $('#myTable').html(table);
   });
