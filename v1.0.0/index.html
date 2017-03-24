@@ -38,8 +38,7 @@ function saveTiny(data) {
   for(var i=0;i<data.length;i++){
     var found = false;
     for(var j=0;j<list.length;j++){""
-      if(list[j].id==data[i].id){
-        list[j].rev= data[i].rev;
+      if(list[j].$id==data[i].$id){
         found=true;
         break;
       }
@@ -54,9 +53,9 @@ function renderList() {
   var table = $('<table>');
   list.forEach(function(el){
     var tr = $('<tr>');
-    tr.append('<td>' + el.id + '</td>');
+    tr.append('<td>' + el.$id + '</td>');
     //Here it has to be the TOKEN. For now, I use the uuid combined with the couchUrl and database
-    tr.append('<td><a href="http://www.cheminfo.org/flavor/eln-standalone/viewandcomment/index.html?uuid=' + el.id + '&rev=' + el.rev +"&couchDB={'url':'"+couchUrl+"','database':'"+database +"','kind':'sample'}"+'" target="_blank">' + el.ref + '</a></td>');
+    tr.append('<td><a href="http://www.cheminfo.org/flavor/eln-standalone/viewandcomment/index.html?token=' + JSON.stringify(el)+ "&couchDB={'url':'"+couchUrl+"','database':'"+database +"','kind':'sample'}"+'" target="_blank">' + el.$id + '</a></td>');
     table.append(tr);
     $('#myTable').html(table);
   });
