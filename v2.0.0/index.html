@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, td {
+      border: 1px solid black;
+}
+</style>
+
+<title>NMR manager</title>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>
+  const couchUrl = 'https://mydb.cheminfo.org/';
+  const database = 'eln';
+
+window.addEventListener('message', function (event) {
+  saveTiny(event.data);
+  var iframe = document.getElementById("cheminfo");
+  iframe.style.display = "none";
+});
+
+function openVisualizer() {
+  var iframe = document.getElementById("cheminfo");
+  if(!iframe) {
+    var iframe = document.createElement('iframe');
+    iframe.id = "cheminfo"
+    iframe.height = "800";
+    iframe.width = "1000";
+    iframe.src = "http://www.cheminfo.org/flavor/eln-standalone/Selection/index.html?couchUrl=" +
+        couchUrl + "&database=" + database;
+    document.body.appendChild(iframe);
+  }
+  iframe.style.display = "block";
+}
+
+var list = loadList();
+function saveTiny(data) {
+  for(var i = 0; i < data.length; i++){
+    var found = false;
+    for(var j = 0; j < list.length; j++) {
+      if(list[j].$id == data[i].$id) {
+        found = true;
+        break;
+      }
+    }
+    if(!found)
+      list.push(data[i]);
+  }
+  renderList();
+}
+
+function renderList() {
+  var table = $('<table>');
+  list.forEach(function(el){
+    var tr = $('<tr>');
+    tr.append('<td>' + el.$id + '</td>');
+    tr.append('<td><a href="http://www.cheminfo.org/flavor/eln-standalone/viewandcomment/index.html?token=' +
+        JSON.stringify(el) + "&couchDB={'url':'" + couchUrl + "','database':'" + database + "','kind':'sample'}"
+        + '" target="_blank">' + el.$id + '</a></td>');
+    table.append(tr);
+    $('#myTable').html(table);
+  });
+  document.getElementById('json').innerHTML = JSON.stringify(list,null,3);
+}
+
+function loadList() {
+  return [];
+}
+</script>
+
+</head>
+<body>
+<hr>
+<p><h3>On submision web page</h3></p>
+<p>
+  <button onclick="openVisualizer();">Import molecule</button>
+  <button onclick="window.open('http://molecule.cheminfo.org');">Create a new entry</button>
+</p>
+
+<hr>
+<p><h3>The information to access the molecules</h3></p>
+<p>The following JSON could be saved in an external database:</p>
+<p> <textarea id='json' cols=80 rows=8></textarea> </p>
+Example of URL for the reviewer
+<div id="myTable"></div>
+<hr>
+<p><h3>Publising a molecule</h3></p>
+<p>By clicking this button, you will make a copy of the given entry in a public database, where you are not the owner anymore</p>
+<p>
+  <button onclick="releaseMolecule();">Release molecule</button>
+</p>
+
+<hr>
+<p><h3>A public molecule</h3></p>
+...
+<hr>
+<script>
+  renderList();
+</script>
+
+</body>
+</html>
