@@ -56,7 +56,7 @@ function renderList() {
     var tr = $('<tr>');
     tr.append('<td>' + el.$id + '</td>');
     tr.append('<td><a href="http://www.cheminfo.org/flavor/eln-standalone/viewandcomment/index.html?token=' +
-        JSON.stringify(el) + "&couchDB={'url':'" + couchUrl + "','database':'" + database + "','kind':'sample'}"
+        JSON.stringify(el).replace(/\"/g,"'") + "&couchDB="+ JSON.stringify({"url": couchUrl, "database": database, "kind": "sample"}).replace(/\"/g,"'")
         + '" target="_blank">' + el.$id + '</a></td>');
     table.append(tr);
     $('#myTable').html(table);
