@@ -92,8 +92,18 @@ Example of URL for the reviewer
 </p>
 
 <hr>
-<p><h3>A public molecule</h3></p>
-...
+<p><h3>The format</h3></p>
+
+<p> DB_URL + /db/database/entry/ + entry_uuid +?token=token_id </p>
+
+<td><a href="https://mydb.cheminfo.org/db/eln/entry/2719df8e752100c226a5e13655033812?token=SZmCgiJHZXvkvBFK1Q0qhNb5H2DxqpmR" target="_blank">
+  https://mydb.cheminfo.org/db/eln/entry/2719df8e752100c226a5e13655033812?token=SZmCgiJHZXvkvBFK1Q0qhNb5H2DxqpmR</a></td>
+
+<p> DB_URL + /db/database/entry/ + entry_uuid + / + attachment_key +?token=token_id </p>
+
+<td><a href="https://mydb.cheminfo.org/db/eln/entry/2719df8e752100c226a5e13655033812/spectra/nmr/h1_0.jdx?token=SZmCgiJHZXvkvBFK1Q0qhNb5H2DxqpmR
+" target="_blank">https://mydb.cheminfo.org/db/eln/entry/2719df8e752100c226a5e13655033812/spectra/nmr/h1_0.jdx?token=SZmCgiJHZXvkvBFK1Q0qhNb5H2DxqpmR</a></td>
+
 <hr>
 <script>
   renderList();
